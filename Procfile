@@ -1,0 +1,1 @@
+web: gunicorn djapp.djapp.wsgi:application
