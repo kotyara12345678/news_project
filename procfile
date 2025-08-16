@@ -1,1 +1,1 @@
-web: gunicort mysite.wsgi
+web: gunicort djapp.djapp.wsgi
