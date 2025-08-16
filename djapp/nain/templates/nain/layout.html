@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'nain/css/nain.css' %}">
+    
+</head>
+<body>
+    <aside>
+        <img src="{% static 'nain/css/img/news_logo.jpg' %}">
+        <span class="logo"></span>
+        <h3>Навигация</h3>
+        <ul>
+            <li><a href="{% url 'news_home' %}">Новости</a></li>
+            <li><a href="{% url 'about' %}">Про нас</a></li>
+            <li><a href="{% url 'contact' %}">Контакты</a></li>
+            <li><a href="{% url 'home' %}">Конфиденциальность</a></li>
+
+        </ul>
+    </aside>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
