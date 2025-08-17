@@ -1,17 +1,23 @@
 from pathlib import Path
 import os
 
+# --- Базовые пути ---
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-u@*+m6*-u-78=2(vc+jp3(3nv(+45o!^&naboi+4adk@t+g%2o'
+# --- Секретный ключ и DEBUG ---
+SECRET_KEY = os.getenv(
+    "DJANGO_SECRET_KEY",
+    "django-insecure-u@*+m6*-u-78=2(vc+jp3(3nv(+45o!^&naboi+4adk@t+g%2o"
+)
 
-DEBUG = False  # для продакшена ставим False
+DEBUG = os.getenv("DEBUG", "False") == "True"  # Для продакшена False
 
-ALLOWED_HOSTS = ['*']  # Render сам назначает хост, '*' работает для теста
+# --- Разрешённые хосты ---
+ALLOWED_HOSTS = ['.onrender.com', 'localhost']
 
-# Приложения
+# --- Установленные приложения ---
 INSTALLED_APPS = [
-    'nain',
+    'main',
     'news',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -21,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+# --- Middleware ---
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -31,12 +38,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# --- Корневой URL конфиг ---
 ROOT_URLCONF = 'djapp.urls'
 
+# --- Шаблоны ---
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # если будут общие шаблоны
+        'DIRS': [BASE_DIR / 'templates'],  # общие шаблоны
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -48,9 +57,10 @@ TEMPLATES = [
     },
 ]
 
+# --- WSGI ---
 WSGI_APPLICATION = 'djapp.wsgi.application'
 
-# База данных
+# --- База данных (SQLite по умолчанию) ---
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -58,27 +68,28 @@ DATABASES = {
     }
 }
 
-# Валидаторы паролей
+# --- Валидаторы паролей ---
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# --- Локализация ---
 LANGUAGE_CODE = 'ru'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 USE_TZ = True
 
-# Статика и медиа
+# --- Статика ---
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # здесь соберётся collectstatic
-STATICFILES_DIRS = [
-    BASE_DIR / "static",  # локальная папка для разработки
-]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
+# --- Медиа ---
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# --- Поля авто-инкремента по умолчанию ---
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
