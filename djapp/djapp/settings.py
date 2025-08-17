@@ -17,7 +17,7 @@ ALLOWED_HOSTS = ['.onrender.com', 'localhost']
 
 # --- Установленные приложения ---
 INSTALLED_APPS = [
-    'main',
+    'nain',
     'news',
     'django.contrib.admin',
     'django.contrib.auth',
