@@ -10,10 +10,10 @@ SECRET_KEY = os.getenv(
     "django-insecure-u@*+m6*-u-78=2(vc+jp3(3nv(+45o!^&naboi+4adk@t+g%2o"
 )
 
-DEBUG = os.getenv("DEBUG", "False") == "True"  # Для продакшена False
+DEBUG = True
 
 # --- Разрешённые хосты ---
-ALLOWED_HOSTS = ['.onrender.com', 'localhost']
+ALLOWED_HOSTS = ['192.168.0.23', 'localhost', '127.0.0.1']
 
 # --- Установленные приложения ---
 INSTALLED_APPS = [
@@ -60,11 +60,15 @@ TEMPLATES = [
 # --- WSGI ---
 WSGI_APPLICATION = 'djapp.wsgi.application'
 
-# --- База данных (SQLite по умолчанию) ---
+# --- База данных
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'mysite_db',  # <-- поменяли на новую базу
+        'USER': 'myuser',
+        'PASSWORD': 'mypassword',
+        'HOST': 'localhost',  # <-- если используешь Docker, лучше имя контейнера
+        'PORT': '5432',
     }
 }
 
@@ -85,7 +89,7 @@ USE_TZ = True
 # --- Статика ---
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [BASE_DIR / 'nain' / 'static']
 
 # --- Медиа ---
 MEDIA_URL = '/media/'
