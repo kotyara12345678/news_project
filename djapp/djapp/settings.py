@@ -1,21 +1,18 @@
 from pathlib import Path
 import os
+import dj_database_url
 
-# --- Базовые пути ---
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# --- Секретный ключ и DEBUG ---
 SECRET_KEY = os.getenv(
     "DJANGO_SECRET_KEY",
     "django-insecure-u@*+m6*-u-78=2(vc+jp3(3nv(+45o!^&naboi+4adk@t+g%2o"
 )
 
-DEBUG = True
+DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
 
-# --- Разрешённые хосты ---
-ALLOWED_HOSTS = ['192.168.0.23', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ["*"]
 
-# --- Установленные приложения ---
 INSTALLED_APPS = [
     'nain',
     'news',
@@ -27,7 +24,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-# --- Middleware ---
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -38,14 +34,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# --- Корневой URL конфиг ---
 ROOT_URLCONF = 'djapp.urls'
 
-# --- Шаблоны ---
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # общие шаблоны
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -57,22 +51,12 @@ TEMPLATES = [
     },
 ]
 
-# --- WSGI ---
 WSGI_APPLICATION = 'djapp.wsgi.application'
 
-# --- База данных
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mysite_db',  # <-- поменяли на новую базу
-        'USER': 'myuser',
-        'PASSWORD': 'mypassword',
-        'HOST': 'localhost',  # <-- если используешь Docker, лучше имя контейнера
-        'PORT': '5432',
-    }
+    "default": dj_database_url.config(default=os.getenv("DATABASE_URL"))
 }
 
-# --- Валидаторы паролей ---
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -80,20 +64,16 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# --- Локализация ---
 LANGUAGE_CODE = 'ru'
 TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
 USE_TZ = True
 
-# --- Статика ---
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'nain' / 'static']
 
-# --- Медиа ---
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# --- Поля авто-инкремента по умолчанию ---
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
